@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flight Status Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0a0e1a;
+      color: #e0e6f0;
+      min-height: 100vh;
+    }
+
+    header {
+      background: linear-gradient(135deg, #FF9900 0%, #146EB4 100%);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    header .plane-icon { font-size: 2rem; }
+    header h1 { font-size: 1.6rem; color: #fff; font-weight: 700; }
+    header p  { font-size: 0.85rem; color: rgba(255,255,255,0.8); margin-top: 2px; }
+
+    .status-bar {
+      background: #0d1b2a;
+      padding: 8px 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.8rem;
+      border-bottom: 1px solid #1e3a5f;
+    }
+    .status-bar .live { color: #00e676; font-weight: 600; }
+    .status-bar .airport { color: #FF9900; font-weight: 600; }
+    .status-bar .updated { color: #7a9bbf; }
+
+    .container { padding: 2rem; }
+
+    .summary-cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .card {
+      background: #0d1b2a;
+      border: 1px solid #1e3a5f;
+      border-left: 4px solid #FF9900;
+      border-radius: 6px;
+      padding: 1.2rem 1.5rem;
+      text-align: center;
+    }
+    .card .number { font-size: 2.2rem; font-weight: 700; color: #FF9900; }
+    .card .label  { font-size: 0.78rem; color: #7a9bbf; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .card.green .number { color: #00e676; }
+    .card.orange .number { color: #FF9900; }
+    .card.red .number { color: #f44336; }
+    .card.blue .number { color: #146EB4; }
+
+    .table-wrapper {
+      background: #0d1b2a;
+      border: 1px solid #1e3a5f;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .table-header {
+      background: linear-gradient(135deg, #FF9900 0%, #146EB4 100%);
+      padding: 0.9rem 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.03em;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+
+    thead { background: #0f2133; }
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 0.75rem;
+      color: #FF9900;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-weight: 600;
+      border-bottom: 1px solid #1e3a5f;
+    }
+    td {
+      padding: 13px 16px;
+      font-size: 0.875rem;
+      border-bottom: 1px solid #122030;
+      color: #ccd9e8;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #0f2133; }
+
+    .flight-num { font-weight: 700; color: #146EB4; }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .on-time   { background: #0a3d2e; color: #00e676; border: 1px solid #00e676; }
+    .delayed   { background: #3d2400; color: #FF9900; border: 1px solid #FF9900; }
+    .boarding  { background: #0a1f3d; color: #4fc3f7; border: 1px solid #4fc3f7; }
+    .departed  { background: #1a1a2e; color: #7a9bbf; border: 1px solid #3a5a7a; }
+    .cancelled { background: #3d0a0a; color: #f44336; border: 1px solid #f44336; }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: #3a5a7a;
+      font-size: 0.75rem;
+      border-top: 1px solid #1e3a5f;
+      margin-top: 2rem;
+    }
+    footer span { color: #FF9900; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="plane-icon">&#9992;</div>
+  <div>
+    <h1>Flight Status Dashboard</h1>
+    <p>Real-time Departure &amp; Arrival Monitor &mdash; Mumbai International Airport (BOM)</p>
+  </div>
+</header>
+
+<div class="status-bar">
+  <span class="live">&#9679; System Operational</span>
+  <span class="airport">&#9992; Mumbai International Airport &mdash; BOM</span>
+  <span class="updated">Last Updated: 25 Jun 2026, 06:30 IST</span>
+</div>
+
+<div class="container">
+
+  <div class="summary-cards">
+    <div class="card blue">
+      <div class="number">24</div>
+      <div class="label">Total Flights</div>
+    </div>
+    <div class="card green">
+      <div class="number">16</div>
+      <div class="label">On Time</div>
+    </div>
+    <div class="card orange">
+      <div class="number">5</div>
+      <div class="label">Delayed</div>
+    </div>
+    <div class="card red">
+      <div class="number">3</div>
+      <div class="label">Cancelled</div>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <div class="table-header">&#9992; Live Flight Board</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Flight</th>
+          <th>Origin</th>
+          <th>Destination</th>
+          <th>Departure</th>
+          <th>Arrival</th>
+          <th>Gate</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="flight-num">AI-101</span></td>
+          <td>Mumbai (BOM)</td><td>Delhi (DEL)</td>
+          <td>06:00</td><td>08:10</td><td>A4</td>
+          <td><span class="badge on-time">On Time</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">6E-204</span></td>
+          <td>Chennai (MAA)</td><td>Bangalore (BLR)</td>
+          <td>07:30</td><td>08:30</td><td>B2</td>
+          <td><span class="badge boarding">Boarding</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">UK-835</span></td>
+          <td>Hyderabad (HYD)</td><td>Mumbai (BOM)</td>
+          <td>08:00</td><td>09:45</td><td>C7</td>
+          <td><span class="badge delayed">Delayed</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">SG-401</span></td>
+          <td>Delhi (DEL)</td><td>Kolkata (CCU)</td>
+          <td>09:15</td><td>11:30</td><td>A1</td>
+          <td><span class="badge on-time">On Time</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">AI-505</span></td>
+          <td>Bangalore (BLR)</td><td>Chennai (MAA)</td>
+          <td>10:00</td><td>11:00</td><td>&mdash;</td>
+          <td><span class="badge cancelled">Cancelled</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">6E-789</span></td>
+          <td>Mumbai (BOM)</td><td>Hyderabad (HYD)</td>
+          <td>11:30</td><td>13:00</td><td>D3</td>
+          <td><span class="badge on-time">On Time</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">UK-212</span></td>
+          <td>Delhi (DEL)</td><td>Mumbai (BOM)</td>
+          <td>12:00</td><td>14:15</td><td>&mdash;</td>
+          <td><span class="badge departed">Departed</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">AI-308</span></td>
+          <td>Kolkata (CCU)</td><td>Delhi (DEL)</td>
+          <td>13:45</td><td>16:00</td><td>B5</td>
+          <td><span class="badge delayed">Delayed</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">SG-112</span></td>
+          <td>Mumbai (BOM)</td><td>Goa (GOI)</td>
+          <td>14:30</td><td>15:45</td><td>A6</td>
+          <td><span class="badge on-time">On Time</span></td>
+        </tr>
+        <tr>
+          <td><span class="flight-num">6E-330</span></td>
+          <td>Bangalore (BLR)</td><td>Delhi (DEL)</td>
+          <td>15:00</td><td>17:20</td><td>C2</td>
+          <td><span class="badge on-time">On Time</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<footer>
+  Deployed on <span>AWS EC2</span> &nbsp;&middot;&nbsp;
+  Served by <span>Nginx</span> &nbsp;&middot;&nbsp;
+  Infrastructure managed by <span>Terraform</span> &nbsp;&middot;&nbsp;
+  CI/CD via <span>GitHub Actions</span>
+</footer>
+
+</body>
+</html>
