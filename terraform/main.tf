@@ -13,6 +13,20 @@ provider "aws" {
 }
 
 # --------------------
+# SSH Key Pair
+# --------------------
+resource "aws_key_pair" "deployer_key" {
+  key_name   = "${var.project_name}-key"
+  public_key = file(var.public_key_path)
+
+  tags = {
+    Name        = "${var.project_name}-key"
+    Environment = var.environment
+    Project     = var.project_name
+  }
+}
+
+# --------------------
 # Security Group
 # --------------------
 resource "aws_security_group" "flight_dashboard_sg" {
@@ -55,6 +69,7 @@ resource "aws_security_group" "flight_dashboard_sg" {
 resource "aws_instance" "flight_dashboard" {
   ami                    = var.ami_id
   instance_type          = var.instance_type
+  key_name               = aws_key_pair.deployer_key.key_name
   vpc_security_group_ids = [aws_security_group.flight_dashboard_sg.id]
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
 

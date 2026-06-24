@@ -27,3 +27,9 @@ variable "ami_id" {
   type        = string
   default     = "ami-0326c8c1e2d6bf78c"
 }
+
+variable "public_key_path" {
+  description = "Path to the SSH public key used for EC2 access"
+  type        = string
+  default     = "~/.ssh/flight-dashboard-key.pub"
+}
