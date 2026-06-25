@@ -144,7 +144,8 @@ No manual redeployment is needed after the initial setup. Deployment credentials
 ## 💰 Cost Awareness
 
 - **EC2 t3.micro**: Free Tier eligible (750 hours/month for 12 months on eligible accounts)
-- **Estimated cost outside Free Tier**: ~$0.0104/hour (~$7.5/month) for t3.micro in ap-south-1
+- **Estimated cost outside Free Tier**: ~$0.0112/hour (~$8.18/month, based on the standard  
+   730 hours/month average) for t3.micro in ap-south-1, per AWS Console pricing
 - **No additional always-on services**: No NAT Gateway, no Load Balancer, no managed database
 - **Recommendation for production scale-up**: Use an Auto Scaling Group with mixed 
   Spot/On-Demand instances, and tear down idle dev/test environments via Terraform 
