@@ -1,11 +1,14 @@
 name: Deploy Flight Status Dashboard
 
 on:
+  workflow_dispatch:
+  
   push:
     branches:
       - main
     paths:
       - 'app/**'
+    
 
 jobs:
   deploy:
